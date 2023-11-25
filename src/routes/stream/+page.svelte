@@ -3,10 +3,11 @@
 	import Layout from '../+layout.svelte';
 
 	let player;
+	let videoSlug;
 
 	const toggle = () => {
 		console.log('changing video id');
-		player.loadVideoById('lS7vwED8eC8');
+		player.loadVideoById(videoSlug);
 	};
 </script>
 
@@ -14,11 +15,18 @@
 	<Youtube bind:player />
 </div>
 
+<input
+	class="input"
+	title="Input (text)"
+	type="text"
+	placeholder="input text"
+	bind:value={videoSlug}
+/>
+
 <button on:click={toggle}>change video</button>
 
 <style>
 	.youtube-player {
-		width: 600px;
 		aspect-ratio: 16/9;
 	}
 </style>
