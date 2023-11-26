@@ -17,7 +17,7 @@ const YouTube = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 const _page_svelte_svelte_type_style_lang = "";
 const css = {
-  code: ".youtube-player.s-EHh9iHn8Ikr3{aspect-ratio:16/9;min-width:400px}",
+  code: ".youtube-player.s-EHh9iHn8Ikr3{aspect-ratio:16/9;min-width:70vw}",
   map: null
 };
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -40,7 +40,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         }
       },
       {}
-    )}</div> <input class="input" title="Input (text)" type="text" placeholder="Input YouTube video URL"${add_attribute("value", videoSlug, 0)}> <button data-svelte-h="svelte-10pt4jf">change video</button> </main>`;
+    )}</div> <div class="w-[50vw]"><input class="input" title="Input (text)" type="text" placeholder="Input YouTube video URL"${add_attribute("value", videoSlug, 0)}></div> <button data-svelte-h="svelte-10pt4jf">change video</button> </main>`;
   } while (!$$settled);
   return $$rendered;
 });

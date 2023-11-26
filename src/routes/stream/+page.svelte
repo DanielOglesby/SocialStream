@@ -3,7 +3,7 @@
 	import { trimURL } from '../../utils/helpers';
 
 	let player;
-	let videoSlug;
+	let videoSlug: string;
 	let trimmedVideoSlug = '';
 	$: if (videoSlug) trimmedVideoSlug = trimURL(videoSlug);
 
