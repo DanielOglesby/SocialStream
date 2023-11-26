@@ -20,20 +20,21 @@
 		<Youtube bind:player />
 	</div>
 
-	<input
-		class="input"
-		title="Input (text)"
-		type="text"
-		placeholder="Input YouTube video URL"
-		bind:value={videoSlug}
-	/>
-
+	<div class="w-[50vw]">
+		<input
+			class="input"
+			title="Input (text)"
+			type="text"
+			placeholder="Input YouTube video URL"
+			bind:value={videoSlug}
+		/>
+	</div>
 	<button on:click={toggle}>change video</button>
 </main>
 
 <style>
 	.youtube-player {
 		aspect-ratio: 16/9;
-		min-width: 400px;
+		min-width: 70vw;
 	}
 </style>
