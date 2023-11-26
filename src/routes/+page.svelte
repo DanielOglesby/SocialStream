@@ -1,1 +1,5 @@
-<p class="text-3xl text-white">cock and balls</p>
+<script>
+	import Auth from '../components/Auth.svelte';
+</script>
+
+<Auth />
