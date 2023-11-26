@@ -24,7 +24,7 @@
 		class="input"
 		title="Input (text)"
 		type="text"
-		placeholder="input text"
+		placeholder="Input YouTube video URL"
 		bind:value={videoSlug}
 	/>
 
