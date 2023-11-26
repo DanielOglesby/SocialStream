@@ -13,22 +13,27 @@
 	};
 </script>
 
-<div class="youtube-player">
-	<Youtube bind:player />
-</div>
+<main
+	class="flex items-center justify-center h-screen flex-col gap-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8"
+>
+	<div class="youtube-player">
+		<Youtube bind:player />
+	</div>
 
-<input
-	class="input"
-	title="Input (text)"
-	type="text"
-	placeholder="input text"
-	bind:value={videoSlug}
-/>
+	<input
+		class="input"
+		title="Input (text)"
+		type="text"
+		placeholder="input text"
+		bind:value={videoSlug}
+	/>
 
-<button on:click={toggle}>change video</button>
+	<button on:click={toggle}>change video</button>
+</main>
 
 <style>
 	.youtube-player {
 		aspect-ratio: 16/9;
+		min-width: 400px;
 	}
 </style>
