@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
 	import Youtube from '../../components/YouTube.svelte';
-	import Layout from '../+layout.svelte';
+	import { trimURL } from '../../utils/helpers';
 
 	let player;
 	let videoSlug;
+	let trimmedVideoSlug = '';
+	$: if (videoSlug) trimmedVideoSlug = trimURL(videoSlug);
 
 	const toggle = () => {
 		console.log('changing video id');
-		player.loadVideoById(videoSlug);
+		player.loadVideoById(trimmedVideoSlug);
 	};
 </script>
 
