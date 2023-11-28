@@ -16,7 +16,6 @@ let firebaseConfig = {
   appId: import.meta.env.VITE_APPID,
 };
 
-console.log("API KEY", import.meta.env.VITE_APIKEY);
 
 // Initialize Firebase
 let firebaseApp;

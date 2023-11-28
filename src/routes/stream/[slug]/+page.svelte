@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Youtube from '../../../components/YouTube.svelte';
+	import Chat from '../../../components/Chat.svelte';
 	import { trimURL } from '../../../utils/helpers';
 
 	let player;
@@ -28,6 +29,8 @@
 		/>
 	</div>
 	<button on:click={toggle}>change video</button>
+
+	<Chat />
 </main>
 
 <style>
