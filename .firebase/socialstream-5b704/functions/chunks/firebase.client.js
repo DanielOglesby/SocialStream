@@ -8,7 +8,6 @@ let firebaseConfig = {
   messagingSenderId: "727474452664",
   appId: "1:727474452664:web:4b8d7ed52140f1ee625c4d"
 };
-console.log("API KEY", "AIzaSyDMyno4Ju3SmpmOZU1ouj8xn-rY8pMJmTc");
 let firebaseApp;
 if (!getApps().length) {
   firebaseApp = initializeApp(firebaseConfig);

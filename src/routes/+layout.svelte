@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { auth } from '../lib/firebase/firebase.client';
 	import { authStore } from '../stores/authStore';
+	import { AppBar } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	onMount(() => {
@@ -17,7 +18,7 @@
 	});
 </script>
 
-<main class="mainContainer">
+<main class="mainContainer h-screen flex-col gap-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
 	<slot />
 </main>
 

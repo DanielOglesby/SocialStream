@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Youtube from '../../components/YouTube.svelte';
-	import { trimURL } from '../../utils/helpers';
+	import Youtube from '../../../components/YouTube.svelte';
+	import { trimURL } from '../../../utils/helpers';
 
 	let player;
 	let videoSlug: string;
@@ -13,9 +13,7 @@
 	};
 </script>
 
-<main
-	class="flex items-center justify-center h-screen flex-col gap-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8"
->
+<main class="flex items-center justify-center flex-col gap-10">
 	<div class="youtube-player">
 		<Youtube bind:player />
 	</div>
