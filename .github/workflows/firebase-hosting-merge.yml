@@ -18,3 +18,5 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOCIALSTREAM_5B704 }}'
           channelId: live
           projectId: socialstream-5b704
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
