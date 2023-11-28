@@ -25,7 +25,7 @@
 			}
 		}
 		if ($authStore.currentUser) {
-			window.location.href = '/stream';
+			window.location.href = '/find-a-room';
 		}
 	}
 </script>

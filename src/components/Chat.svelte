@@ -2,8 +2,8 @@
 	import dayjs from 'dayjs';
 	import { getAuth } from 'firebase/auth';
 
-	const auth = getAuth();
-	const user = auth.currentUser;
+	let auth = getAuth();
+	let user = auth.currentUser;
 
 	type Message = {
 		id: number;
@@ -47,7 +47,7 @@
 	}
 
 	function addMessage(): void {
-		const newMessage: Message = {
+		let newMessage: Message = {
 			id: messageFeed.length,
 			name: user?.email,
 			timestamp: dayjs().format('MMMM D, YYYY @ h:mm A'),
