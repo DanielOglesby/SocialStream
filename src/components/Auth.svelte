@@ -32,7 +32,7 @@
 
 <div class="container">
 	<h1>{register ? 'Register' : 'Log in'}</h1>
-	<form>
+	<form class="gap-2">
 		<label>
 			<input bind:value={email} type="email" placeholder="Email" />
 		</label>
@@ -44,7 +44,7 @@
 				<input bind:value={confirmPassword} type="password" placeholder="Confirm Password" />
 			</label>
 		{/if}
-		<button on:click={handleSubmit}>Submit</button>
+		<button on:click={handleSubmit} type="button" class="btn variant-filled-primary">Submit</button>
 	</form>
 	{#if register}
 		<div
