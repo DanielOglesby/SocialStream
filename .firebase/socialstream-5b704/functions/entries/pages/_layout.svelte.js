@@ -50,7 +50,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     arrow
   });
   $$result.css.add(css);
-  return `<main class="mainContainer s-7IPF32Wcq3s8">${slots.default ? slots.default({}) : ``} </main>`;
+  return `<main class="mainContainer h-screen flex-col gap-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8 s-7IPF32Wcq3s8">${slots.default ? slots.default({}) : ``} </main>`;
 });
 export {
   Layout as default
