@@ -1,9 +1,14 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import { getAuth } from 'firebase/auth';
+	import { authStore } from '../stores/authStore';
 
-	let auth = getAuth();
-	let user = auth.currentUser;
+	let currentUser: any;
+
+	const unsubscribe = authStore.subscribe((authState) => {
+		console.log('Current User:', authState.currentUser);
+		currentUser = authState.currentUser;
+	});
 
 	type Message = {
 		id: number;
@@ -49,7 +54,7 @@
 	function addMessage(): void {
 		let newMessage: Message = {
 			id: messageFeed.length,
-			name: user?.email,
+			name: currentUser?.email,
 			timestamp: dayjs().format('MMMM D, YYYY @ h:mm A'),
 			message: currentMessage,
 			color: 'variant-soft-primary'

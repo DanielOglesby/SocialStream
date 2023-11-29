@@ -9,7 +9,7 @@
 	$: if (videoSlug) trimmedVideoSlug = trimURL(videoSlug);
 
 	const toggle = () => {
-		console.log('changing video id');
+		console.log('changing video id: ', trimmedVideoSlug);
 		player.loadVideoById(trimmedVideoSlug);
 	};
 </script>
