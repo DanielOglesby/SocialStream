@@ -70,7 +70,7 @@
 	}
 </script>
 
-<div bind:this={elemChat} class="overflow-y-auto">
+<div bind:this={elemChat} class="overflow-y-scroll h-[30vh]">
 	<div class="w-full grid grid-cols-[auto_1fr] gap-1">
 		{#each messageFeed as message}
 			<div class="bg-surface-500/30 p-4">{message.name}</div>
@@ -79,7 +79,9 @@
 	</div>
 </div>
 
-<div class="input-group input-group-divider grid-cols-[auto_1fr_auto] rounded-container-token">
+<div
+	class="input-group input-group-divider grid-cols-[auto_1fr_auto] rounded-container-token fixed bottom-0"
+>
 	<button class="input-group-shim">+</button>
 	<textarea
 		bind:value={currentMessage}

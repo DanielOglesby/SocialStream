@@ -7,6 +7,13 @@
     "isEntry": true,
     "src": ".svelte-kit/generated/server/internal.js"
   },
+  "_authStore.js": {
+    "file": "chunks/authStore.js",
+    "imports": [
+      "_index.js",
+      "_firebase.client.js"
+    ]
+  },
   "_firebase.client.js": {
     "file": "chunks/firebase.client.js"
   },
@@ -43,12 +50,12 @@
     "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js"
   },
   "src/routes/+layout.css": {
-    "file": "_app/immutable/assets/_layout.53754dc9.css",
+    "file": "_app/immutable/assets/_layout.529fdf4b.css",
     "src": "src/routes/+layout.css"
   },
   "src/routes/+layout.svelte": {
     "css": [
-      "_app/immutable/assets/_layout.53754dc9.css"
+      "_app/immutable/assets/_layout.529fdf4b.css"
     ],
     "file": "entries/pages/_layout.svelte.js",
     "imports": [
@@ -70,8 +77,7 @@
     "file": "entries/pages/_page.svelte.js",
     "imports": [
       "_ssr.js",
-      "_index.js",
-      "_firebase.client.js"
+      "_authStore.js"
     ],
     "isEntry": true,
     "src": "src/routes/+page.svelte"
@@ -102,7 +108,8 @@
     ],
     "file": "entries/pages/stream/_slug_/_page.svelte.js",
     "imports": [
-      "_ssr.js"
+      "_ssr.js",
+      "_authStore.js"
     ],
     "isEntry": true,
     "src": "src/routes/stream/[slug]/+page.svelte"

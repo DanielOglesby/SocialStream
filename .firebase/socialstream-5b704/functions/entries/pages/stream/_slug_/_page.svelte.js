@@ -1,6 +1,7 @@
-import { c as create_ssr_component, f as add_attribute, i as each, e as escape, v as validate_component } from "../../../../chunks/ssr.js";
+import { c as create_ssr_component, f as add_attribute, h as each, e as escape, v as validate_component } from "../../../../chunks/ssr.js";
 import "dayjs";
-import { getAuth } from "firebase/auth";
+import "firebase/auth";
+import { a as authStore } from "../../../../chunks/authStore.js";
 const YouTube_svelte_svelte_type_style_lang = "";
 const css$1 = {
   code: ".youtube-player.s-q4GTRpz7qyVE{width:100%;height:100%}",
@@ -19,8 +20,10 @@ const YouTube = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 const Chat = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let messageFeed;
-  let auth = getAuth();
-  auth.currentUser;
+  authStore.subscribe((authState) => {
+    console.log("Current User:", authState.currentUser);
+    authState.currentUser;
+  });
   let elemChat;
   messageFeed = [
     {
