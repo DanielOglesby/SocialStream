@@ -28,7 +28,9 @@
 			bind:value={videoSlug}
 		/>
 	</div>
-	<button on:click={toggle}>change video</button>
+	<button on:click={toggle} class="btn bg-gradient-to-br variant-filled-primary"
+		>change video</button
+	>
 
 	<Chat />
 </main>

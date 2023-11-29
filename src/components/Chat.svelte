@@ -85,6 +85,11 @@
 	<button class="input-group-shim">+</button>
 	<textarea
 		bind:value={currentMessage}
+		on:keydown={($event) => {
+			if ($event.key === 'Enter') {
+				addMessage();
+			}
+		}}
 		class="bg-transparent border-0 ring-0"
 		name="prompt"
 		id="prompt"
