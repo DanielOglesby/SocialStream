@@ -24,21 +24,21 @@
 
 			let messages: Message[] = [];
 
-			querySnapshot.forEach(async (roomDoc) => {
-				const roomId = roomDoc.id;
-				const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
-				const messagesQuerySnapshot = await getDocs(messagesCollectionRef);
+			// Use Promise.all to wait for all messages to be fetched
+			await Promise.all(
+				querySnapshot.docs.map(async (roomDoc) => {
+					const roomId = roomDoc.id;
+					const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
+					const messagesQuerySnapshot = await getDocs(messagesCollectionRef);
 
-				messagesQuerySnapshot.forEach((messageDoc) => {
-					const messageData = messageDoc.data() as Message;
-					messages = [...messages, messageData];
-				});
-				messageFeed = messages;
-			});
-
-			if (querySnapshot.empty) {
-				console.log('No matching documents.');
-			}
+					messagesQuerySnapshot.forEach((messageDoc) => {
+						const messageData = messageDoc.data() as Message;
+						messages = [...messages, messageData];
+					});
+				})
+			);
+			messageFeed = messages; // Set messageFeed after all messages are collected
+			console.log('Messages fetched successfully:', messages);
 		} catch (error) {
 			console.error('Error fetching messages:', error);
 		}

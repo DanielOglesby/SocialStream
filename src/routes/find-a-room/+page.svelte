@@ -1,13 +1,45 @@
-<script>
+<script lang="ts">
+	import dayjs from 'dayjs';
+	import { db } from '../../firebase';
+	import { doc, setDoc, collection, addDoc } from 'firebase/firestore';
+
 	let roomName = '';
 
-	function handleEnterRoomClick() {
+	type Message = {
+		id: number;
+		name: any;
+		timestamp: string;
+		message: string;
+		color: string;
+	};
+
+	async function handleEnterRoomClick() {
 		console.log('roomName ', roomName);
 		if (roomName === '') {
 			alert('Enter a valid room name');
 			return;
 		}
-		window.location.href = `/stream/${roomName}`;
+
+		try {
+			// Create a document for the new room
+			const roomDocRef = doc(db, 'rooms', roomName);
+			await setDoc(roomDocRef, { name: roomName });
+
+			// Add a message document to the 'messages' subcollection
+			const messagesCollectionRef = collection(roomDocRef, 'messages');
+			const newMessage: Message = {
+				id: 1,
+				name: 'Admin',
+				timestamp: dayjs().format('MMMM D, YYYY @ h:mm A'),
+				message: 'Welcome to the room!',
+				color: 'blue'
+			};
+			await addDoc(messagesCollectionRef, newMessage);
+
+			window.location.href = `/stream/${roomName}`;
+		} catch (error) {
+			console.error('Error creating room:', error);
+		}
 	}
 </script>
 
