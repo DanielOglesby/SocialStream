@@ -13,7 +13,6 @@
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
-		console.log('Room Name:', roomName);
 		fetchMessages(roomName);
 	});
 
@@ -93,11 +92,8 @@
 		};
 
 		postMessage(roomName, newMessage);
-		// Append the new message to the message feed
 		messageFeed = [...messageFeed, newMessage];
-		// Clear the textarea message
 		currentMessage = '';
-		// Smoothly scroll to the bottom of the feed
 		setTimeout(() => {
 			scrollChatBottom('smooth');
 		}, 0);

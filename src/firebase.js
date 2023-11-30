@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp, deleteApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -12,8 +11,6 @@ let firebaseConfig = {
   appId: import.meta.env.VITE_APPID,
 };
 
-
-// Initialize Firebase
 let firebaseApp;
 if (!getApps().length) {
   firebaseApp = initializeApp(firebaseConfig);
