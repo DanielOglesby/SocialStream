@@ -9,6 +9,7 @@
 	let currentMessage = '';
 	let elemChat: HTMLElement;
 	let currentUser: any;
+	let messageFeed: Message[] = [];
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
@@ -22,13 +23,18 @@
 				query(collection(db, 'rooms'), where('name', '==', roomName))
 			);
 
+			let messages: Message[] = [];
+
 			querySnapshot.forEach(async (roomDoc) => {
-				const messagesCollectionRef = collection(db, 'rooms', roomDoc.id, 'messages');
+				const roomId = roomDoc.id;
+				const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
 				const messagesQuerySnapshot = await getDocs(messagesCollectionRef);
 
 				messagesQuerySnapshot.forEach((messageDoc) => {
-					console.log('Message data:', messageDoc.data());
+					const messageData = messageDoc.data() as Message;
+					messages = [...messages, messageData];
 				});
+				messageFeed = messages;
 			});
 
 			if (querySnapshot.empty) {
@@ -73,10 +79,6 @@
 		color: string;
 	};
 
-	$: messageFeed = [];
-
-	$: console.log(messageFeed);
-
 	function scrollChatBottom(behavior?: ScrollBehavior): void {
 		elemChat.scrollTo({ top: elemChat.scrollHeight, behavior });
 	}
@@ -103,10 +105,11 @@
 </script>
 
 <div bind:this={elemChat} class="overflow-y-scroll h-[30vh]">
-	<div class="w-full grid grid-cols-[auto_1fr] gap-1">
+	<div class="w-full grid grid-cols-3 gap-1">
 		{#each messageFeed as message}
 			<div class="bg-surface-500/30 p-4">{message.name}</div>
 			<div class="bg-surface-500/30 p-4">{message.message}</div>
+			<div class="bg-surface-500/30 p-4">{message.timestamp}</div>
 		{/each}
 	</div>
 </div>
