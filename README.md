@@ -1,38 +1,14 @@
-# create-svelte
+# SocialStream
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+SocialStream is an innovative Svelte/SvelteKit application that leverages technologies like Tailwind CSS, Firebase, and Firestore. This platform offers a seamless social media experience with its dynamic and modern interface.
 
-## Creating a project
+You can access the live version of SocialStream at [SocialStream - Live](https://socialstream-beta.vercel.app).
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Technologies Used
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+SocialStream harnesses the power of various cutting-edge technologies:
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- **Svelte/SvelteKit:** Provides an efficient and reactive framework for building the user interface.
+- **Tailwind CSS:** Utilized for responsive and customizable styling, ensuring a sleek and modern look for the application.
+- **Firebase:** Offers a range of services, including authentication, real-time database capabilities, and cloud functions, powering SocialStream's backend functionality.
+- **Firestore:** Enables seamless data storage and retrieval, supporting the real-time features and data-driven interactions within the platform.
