@@ -2,10 +2,13 @@
 	import dayjs from 'dayjs';
 	import { authStore } from '../stores/authStore';
 	import { db } from '../firebase';
-	import { collection, doc, getDoc, query, getDocs, where } from 'firebase/firestore';
+	import { collection, doc, getDoc, query, getDocs, where, addDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 
-	let roomName;
+	let roomName: string;
+	let currentMessage = '';
+	let elemChat: HTMLElement;
+	let currentUser: any;
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
@@ -36,7 +39,26 @@
 		}
 	};
 
-	let currentUser: any;
+	const postMessage = async (roomName: string, message: Message) => {
+		try {
+			const roomQuerySnapshot = await getDocs(
+				query(collection(db, 'rooms'), where('name', '==', roomName))
+			);
+
+			if (!roomQuerySnapshot.empty) {
+				roomQuerySnapshot.forEach(async (roomDoc) => {
+					const roomId = roomDoc.id;
+					const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
+					await addDoc(messagesCollectionRef, message);
+					console.log('Message posted successfully:', message);
+				});
+			} else {
+				console.log('Room not found.');
+			}
+		} catch (error) {
+			console.error('Error posting message:', error);
+		}
+	};
 
 	const unsubscribe = authStore.subscribe((authState) => {
 		console.log('Current User:', authState.currentUser);
@@ -55,9 +77,6 @@
 
 	$: console.log(messageFeed);
 
-	let currentMessage = '';
-	let elemChat: HTMLElement;
-
 	function scrollChatBottom(behavior?: ScrollBehavior): void {
 		elemChat.scrollTo({ top: elemChat.scrollHeight, behavior });
 	}
@@ -70,6 +89,8 @@
 			message: currentMessage,
 			color: 'variant-soft-primary'
 		};
+
+		postMessage(roomName, newMessage);
 		// Append the new message to the message feed
 		messageFeed = [...messageFeed, newMessage];
 		// Clear the textarea message
