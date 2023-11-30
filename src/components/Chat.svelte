@@ -16,6 +16,8 @@
 		fetchMessages(roomName);
 	});
 
+	$: fetchMessages(roomName);
+
 	const fetchMessages = async (roomName: string) => {
 		try {
 			const querySnapshot = await getDocs(
