@@ -1,7 +1,40 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import { getAuth } from 'firebase/auth';
 	import { authStore } from '../stores/authStore';
+	import { db } from '../firebase';
+	import { collection, doc, getDoc, query, getDocs, where } from 'firebase/firestore';
+	import { onMount } from 'svelte';
+
+	let roomName;
+
+	onMount(() => {
+		roomName = window.location.pathname.split('/')[2];
+		console.log('Room Name:', roomName);
+		fetchMessages(roomName);
+	});
+
+	const fetchMessages = async (roomName: string) => {
+		try {
+			const querySnapshot = await getDocs(
+				query(collection(db, 'rooms'), where('name', '==', roomName))
+			);
+
+			querySnapshot.forEach(async (roomDoc) => {
+				const messagesCollectionRef = collection(db, 'rooms', roomDoc.id, 'messages');
+				const messagesQuerySnapshot = await getDocs(messagesCollectionRef);
+
+				messagesQuerySnapshot.forEach((messageDoc) => {
+					console.log('Message data:', messageDoc.data());
+				});
+			});
+
+			if (querySnapshot.empty) {
+				console.log('No matching documents.');
+			}
+		} catch (error) {
+			console.error('Error fetching messages:', error);
+		}
+	};
 
 	let currentUser: any;
 
@@ -18,29 +51,7 @@
 		color: string;
 	};
 
-	$: messageFeed = [
-		{
-			id: 0,
-			name: 'Chloe',
-			timestamp: 'Yesterday @ 2:30pm',
-			message: 'Some message text.',
-			color: 'variant-soft-primary'
-		},
-		{
-			id: 1,
-			name: 'Michael',
-			timestamp: 'Yesterday @ 2:45pm',
-			message: 'Some message text.',
-			color: 'variant-soft-primary'
-		},
-		{
-			id: 2,
-			name: 'Michael',
-			timestamp: 'Yesterday @ 2:45pm',
-			message: 'Some message text.',
-			color: 'variant-soft-primary'
-		}
-	];
+	$: messageFeed = [];
 
 	$: console.log(messageFeed);
 

@@ -3,7 +3,7 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
-	import { auth } from '../lib/firebase/firebase.client';
+	import { auth } from '../firebase';
 	import { authStore } from '../stores/authStore';
 	import { AppBar } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
