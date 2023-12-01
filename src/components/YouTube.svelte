@@ -11,7 +11,7 @@
 			player = new YT.Player(ytPlayerId, {
 				height: '100%',
 				width: '100%',
-				videoId: initialVideoId,
+				videoId: '-bHRcjqnkAI',
 				playerVars: { autoplay: 1 }
 			});
 		}

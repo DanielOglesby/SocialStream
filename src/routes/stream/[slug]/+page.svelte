@@ -29,7 +29,7 @@
 		roomName = window.location.pathname.split('/')[2];
 	});
 
-	const toggle = async () => {
+	const toggle = () => {
 		updateVideo(videoURL);
 		currentVideo = await getCurrentVideo();
 		player.loadVideoById(trimURL(currentVideo));
