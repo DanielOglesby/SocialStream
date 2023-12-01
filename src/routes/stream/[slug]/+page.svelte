@@ -61,8 +61,21 @@
 			const currentVideoQuerySnapshot = await getDocs(currentVideoCollectionRef);
 			const firstDocument = currentVideoQuerySnapshot.docs[0];
 
-			const docSnapshot = await getDoc(doc(currentVideoCollectionRef, firstDocument.id));
-			return docSnapshot.data().videoId;
+			const docRef = doc(currentVideoCollectionRef, firstDocument.id);
+			const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
+				if (docSnapshot.exists()) {
+					console.log('HERE');
+					const videoId = docSnapshot.data().videoId;
+					currentVideo = videoId;
+					console.log('Updated current video:', currentVideo);
+				} else {
+					console.log('Error: Failed to update current video');
+				}
+			});
+
+			unsubscribe();
+
+			return firstDocument.exists ? firstDocument.data().videoId : null;
 		} catch (error) {
 			console.error('Error getting current video:', error);
 			return null;
