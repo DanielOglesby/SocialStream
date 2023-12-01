@@ -20,10 +20,8 @@
 
 	let player;
 	let videoURL: string;
-	let trimmedVideoSlug = '';
 	let roomName = '';
 	let currentVideo;
-	$: if (videoURL) trimmedVideoSlug = trimURL(videoURL);
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
