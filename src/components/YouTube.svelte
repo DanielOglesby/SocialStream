@@ -6,21 +6,30 @@
 
 	const ytPlayerId = 'youtube-player';
 
-	onMount(() => {
-		function load() {
-			player = new YT.Player(ytPlayerId, {
-				height: '100%',
-				width: '100%',
-				videoId: initialVideoId,
-				playerVars: { autoplay: 1 }
-			});
-		}
+	function loadPlayer() {
+		return new Promise((resolve, reject) => {
+			if (window.YT && typeof window.YT.Player === 'function') {
+				resolve();
+			} else {
+				const tag = document.createElement('script');
+				tag.src = 'https://www.youtube.com/iframe_api';
+				const firstScriptTag = document.getElementsByTagName('script')[0];
+				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-		if (window.YT) {
-			load();
-		} else {
-			window.onYouTubeIframeAPIReady = load;
-		}
+				window.onYouTubeIframeAPIReady = resolve;
+			}
+		});
+	}
+
+	onMount(async () => {
+		await loadPlayer();
+
+		player = new YT.Player(ytPlayerId, {
+			height: '100%',
+			width: '100%',
+			videoId: initialVideoId,
+			playerVars: { autoplay: 1 }
+		});
 	});
 </script>
 
