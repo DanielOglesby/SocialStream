@@ -2,15 +2,52 @@
 	import Youtube from '../../../components/YouTube.svelte';
 	import Chat from '../../../components/Chat.svelte';
 	import { trimURL } from '../../../utils/helpers';
+	import { db } from '../../../firebase';
+	import {
+		doc,
+		setDoc,
+		collection,
+		addDoc,
+		onSnapshot,
+		orderBy,
+		getDocs,
+		query,
+		limit
+	} from 'firebase/firestore';
+	import { onMount } from 'svelte';
 
 	let player;
-	let videoSlug: string;
+	let videoURL: string;
 	let trimmedVideoSlug = '';
-	$: if (videoSlug) trimmedVideoSlug = trimURL(videoSlug);
+	let roomName = '';
+	let currentVideo;
+	$: if (videoURL) trimmedVideoSlug = trimURL(videoURL);
+
+	onMount(() => {
+		roomName = window.location.pathname.split('/')[2];
+		const roomDocRef = doc(db, 'rooms', roomName);
+	});
 
 	const toggle = () => {
 		console.log('changing video id: ', trimmedVideoSlug);
+		addVideoInstant(videoURL);
 		player.loadVideoById(trimmedVideoSlug);
+	};
+
+	const addVideoInstant = async (videoUrl: string) => {
+		if (!videoUrl) return null;
+
+		try {
+			const roomDocRef = doc(db, 'rooms', roomName);
+			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+
+			// Add the new video document
+			await addDoc(currentVideoCollectionRef, { videoId: videoUrl });
+			console.log('Video added to currentVideo collection:', videoUrl);
+		} catch (error) {
+			console.error('Error adding video to currentVideo:', error);
+			return null;
+		}
 	};
 </script>
 
@@ -25,7 +62,7 @@
 			title="Input (text)"
 			type="text"
 			placeholder="Input YouTube video URL"
-			bind:value={videoSlug}
+			bind:value={videoURL}
 		/>
 	</div>
 	<button on:click={toggle} class="btn bg-gradient-to-br variant-filled-primary"
