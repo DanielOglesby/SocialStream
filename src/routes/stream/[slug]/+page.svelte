@@ -2,6 +2,21 @@
 	import Youtube from '../../../components/YouTube.svelte';
 	import Chat from '../../../components/Chat.svelte';
 	import { trimURL } from '../../../utils/helpers';
+	import { db } from '../../../firebase';
+	import {
+		doc,
+		setDoc,
+		collection,
+		addDoc,
+		onSnapshot,
+		orderBy,
+		getDocs,
+		getDoc,
+		query,
+		limit,
+		updateDoc
+	} from 'firebase/firestore';
+	import { onMount } from 'svelte';
 
 	let player;
 	let videoSlug: string;
