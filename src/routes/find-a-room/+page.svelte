@@ -2,8 +2,10 @@
 	import dayjs from 'dayjs';
 	import { db } from '../../firebase';
 	import { doc, setDoc, collection, addDoc } from 'firebase/firestore';
+	import { authStore } from '../../stores/authStore';
 
 	let roomName = '';
+	let currentUser: any;
 
 	type Message = {
 		id: number;
@@ -12,6 +14,11 @@
 		message: string;
 		color: string;
 	};
+
+	const unsubscribe = authStore.subscribe((authState) => {
+		console.log('Current User:', authState.currentUser);
+		currentUser = authState.currentUser;
+	});
 
 	async function handleEnterRoomClick() {
 		console.log('roomName ', roomName);
@@ -31,7 +38,7 @@
 				id: 1,
 				name: 'Admin',
 				timestamp: dayjs().format('MMMM D, YYYY @ h:mm A'),
-				message: 'Welcome to the room!',
+				message: 'Welcome to the room, ' + currentUser?.email + '!',
 				color: 'blue'
 			};
 			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');

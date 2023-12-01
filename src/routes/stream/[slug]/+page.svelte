@@ -64,7 +64,7 @@
 				if (docSnapshot.exists()) {
 					console.log('HERE');
 					const videoId = docSnapshot.data().videoId;
-					currentVideo = videoId;
+					player.loadVideoById(trimURL(videoId));
 					console.log('Updated current video:', currentVideo);
 				} else {
 					console.log('Error: Failed to update current video');
