@@ -11,8 +11,10 @@
 		onSnapshot,
 		orderBy,
 		getDocs,
+		getDoc,
 		query,
-		limit
+		limit,
+		updateDoc
 	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
 
@@ -25,27 +27,44 @@
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
-		const roomDocRef = doc(db, 'rooms', roomName);
 	});
 
-	const toggle = () => {
-		console.log('changing video id: ', trimmedVideoSlug);
-		addVideoInstant(videoURL);
-		player.loadVideoById(trimmedVideoSlug);
+	const toggle = async () => {
+		updateVideo(videoURL);
+		currentVideo = await getCurrentVideo();
+		player.loadVideoById(trimURL(currentVideo));
 	};
 
-	const addVideoInstant = async (videoUrl: string) => {
+	const updateVideo = async (videoUrl: string) => {
 		if (!videoUrl) return null;
 
 		try {
 			const roomDocRef = doc(db, 'rooms', roomName);
 			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+			const currentVideoQuerySnapshot = await getDocs(currentVideoCollectionRef);
+			const firstDocument = currentVideoQuerySnapshot.docs[0];
 
-			// Add the new video document
-			await addDoc(currentVideoCollectionRef, { videoId: videoUrl });
-			console.log('Video added to currentVideo collection:', videoUrl);
+			const currentVideoDocRef = doc(currentVideoCollectionRef, firstDocument.id);
+
+			const updateCurrentVideo = await updateDoc(currentVideoDocRef, {
+				videoId: videoUrl
+			});
 		} catch (error) {
-			console.error('Error adding video to currentVideo:', error);
+			console.error('Error getting current video:', error);
+		}
+	};
+
+	const getCurrentVideo = async () => {
+		try {
+			const roomDocRef = doc(db, 'rooms', roomName);
+			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+			const currentVideoQuerySnapshot = await getDocs(currentVideoCollectionRef);
+			const firstDocument = currentVideoQuerySnapshot.docs[0];
+
+			const docSnapshot = await getDoc(doc(currentVideoCollectionRef, firstDocument.id));
+			return docSnapshot.data().videoId;
+		} catch (error) {
+			console.error('Error getting current video:', error);
 			return null;
 		}
 	};
