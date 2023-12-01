@@ -28,11 +28,9 @@
 		}
 
 		try {
-			// Create a document for the new room
 			const roomDocRef = doc(db, 'rooms', roomName);
 			await setDoc(roomDocRef, { name: roomName });
 
-			// Add a message document to the 'messages' subcollection
 			const messagesCollectionRef = collection(roomDocRef, 'messages');
 			const newMessage: Message = {
 				id: 1,
@@ -41,25 +39,23 @@
 				message: 'Welcome to the room, ' + currentUser?.email + '!',
 				color: 'blue'
 			};
-			// Create a reference to the 'currentVideo' subcollection within the room
 			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
 
-			// Check if the 'currentVideo' subcollection is empty
 			const currentVideoSnapshot = await getDocs(currentVideoCollectionRef);
 			if (currentVideoSnapshot.empty) {
-				// If the subcollection is empty, create a new video object
 				const newVideo = {
 					videoId: 'https://www.youtube.com/watch?v=Z7Gp25HHOO0',
 					timestamp: dayjs().format('MMMM D, YYYY @ h:mm A')
 				};
 
-				// Add a new document with the new video data to the 'currentVideo' subcollection
 				await addDoc(currentVideoCollectionRef, {
 					videoId: newVideo,
 					timestamp: dayjs().format('MMMM D, YYYY @ h:mm A')
 				});
+				console.log('Added initial video:', newVideo);
 			}
 			await addDoc(messagesCollectionRef, newMessage);
+			console.log('Added initial message:', newMessage);
 
 			window.location.href = `/stream/${roomName}`;
 		} catch (error) {

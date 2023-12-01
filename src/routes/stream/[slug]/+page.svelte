@@ -47,6 +47,7 @@
 			const updateCurrentVideo = await updateDoc(currentVideoDocRef, {
 				videoId: videoUrl
 			});
+			console.log('Updated current video:', updateCurrentVideo);
 		} catch (error) {
 			console.error('Error getting current video:', error);
 		}
@@ -60,9 +61,8 @@
 			const firstDocument = currentVideoQuerySnapshot.docs[0];
 
 			const docRef = doc(currentVideoCollectionRef, firstDocument.id);
-			const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
+			const unsubscribe = onSnapshot(docRef, { includeMetadataChanges: true }, (docSnapshot) => {
 				if (docSnapshot.exists()) {
-					console.log('HERE');
 					const videoId = docSnapshot.data().videoId;
 					player.loadVideoById(trimURL(videoId));
 					console.log('Updated current video:', currentVideo);
