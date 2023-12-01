@@ -31,7 +31,7 @@
 
 	const toggle = () => {
 		updateVideo(videoURL);
-		currentVideo = await getCurrentVideo();
+		currentVideo = getCurrentVideo();
 		player.loadVideoById(trimURL(currentVideo));
 	};
 
