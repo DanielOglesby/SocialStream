@@ -34,6 +34,15 @@
 				message: 'Welcome to the room!',
 				color: 'blue'
 			};
+			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+			const newVideo = {
+				videoId: 'https://www.youtube.com/watch?v=Z7Gp25HHOO0',
+				timestamp: dayjs().format('MMMM D, YYYY @ h:mm A')
+			};
+			await addDoc(currentVideoCollectionRef, {
+				videoId: newVideo,
+				timestamp: dayjs().format('MMMM D, YYYY @ h:mm A')
+			});
 			await addDoc(messagesCollectionRef, newMessage);
 
 			window.location.href = `/stream/${roomName}`;

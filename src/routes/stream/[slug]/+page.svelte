@@ -2,15 +2,71 @@
 	import Youtube from '../../../components/YouTube.svelte';
 	import Chat from '../../../components/Chat.svelte';
 	import { trimURL } from '../../../utils/helpers';
+	import { db } from '../../../firebase';
+	import {
+		doc,
+		setDoc,
+		collection,
+		addDoc,
+		onSnapshot,
+		orderBy,
+		getDocs,
+		getDoc,
+		query,
+		limit,
+		updateDoc
+	} from 'firebase/firestore';
+	import { onMount } from 'svelte';
 
 	let player;
-	let videoSlug: string;
+	let videoURL: string;
 	let trimmedVideoSlug = '';
-	$: if (videoSlug) trimmedVideoSlug = trimURL(videoSlug);
+	let roomName = '';
+	let currentVideo;
+	$: if (videoURL) trimmedVideoSlug = trimURL(videoURL);
 
-	const toggle = () => {
-		console.log('changing video id: ', trimmedVideoSlug);
-		player.loadVideoById(trimmedVideoSlug);
+	onMount(() => {
+		roomName = window.location.pathname.split('/')[2];
+	});
+
+	const toggle = async () => {
+		updateVideo(videoURL);
+		currentVideo = await getCurrentVideo();
+		player.loadVideoById(trimURL(currentVideo));
+	};
+
+	const updateVideo = async (videoUrl: string) => {
+		if (!videoUrl) return null;
+
+		try {
+			const roomDocRef = doc(db, 'rooms', roomName);
+			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+			const currentVideoQuerySnapshot = await getDocs(currentVideoCollectionRef);
+			const firstDocument = currentVideoQuerySnapshot.docs[0];
+
+			const currentVideoDocRef = doc(currentVideoCollectionRef, firstDocument.id);
+
+			const updateCurrentVideo = await updateDoc(currentVideoDocRef, {
+				videoId: videoUrl
+			});
+		} catch (error) {
+			console.error('Error getting current video:', error);
+		}
+	};
+
+	const getCurrentVideo = async () => {
+		try {
+			const roomDocRef = doc(db, 'rooms', roomName);
+			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+			const currentVideoQuerySnapshot = await getDocs(currentVideoCollectionRef);
+			const firstDocument = currentVideoQuerySnapshot.docs[0];
+
+			const docSnapshot = await getDoc(doc(currentVideoCollectionRef, firstDocument.id));
+			return docSnapshot.data().videoId;
+		} catch (error) {
+			console.error('Error getting current video:', error);
+			return null;
+		}
 	};
 </script>
 
@@ -25,7 +81,7 @@
 			title="Input (text)"
 			type="text"
 			placeholder="Input YouTube video URL"
-			bind:value={videoSlug}
+			bind:value={videoURL}
 		/>
 	</div>
 	<button on:click={toggle} class="btn bg-gradient-to-br variant-filled-primary"
