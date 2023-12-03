@@ -31,7 +31,7 @@
 </script>
 
 <div class="container">
-	<h1>{register ? 'Register' : 'Log in'}</h1>
+	<h1 class="text-xl">{register ? 'Register' : 'Log in'}</h1>
 	<form class="gap-2">
 		<label>
 			<input bind:value={email} type="email" placeholder="Email" />
@@ -58,12 +58,14 @@
 		</div>
 	{:else}
 		<div
+			class="flex items-center flex-col"
 			on:click={() => {
 				register = true;
 			}}
 			on:keydown={() => {}}
 		>
-			Don't have an account? <p>Sign Up</p>
+			Don't have an account?
+			<p>Sign Up</p>
 		</div>
 		<div
 			on:click={() => {
