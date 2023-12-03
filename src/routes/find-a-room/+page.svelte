@@ -71,6 +71,11 @@
 		type="text"
 		placeholder="Choose the name of your room"
 		bind:value={roomName}
+		on:keydown={(e) => {
+			if (e.key === 'Enter') {
+				handleEnterRoomClick();
+			}
+		}}
 	/>
 	<button
 		type="button"

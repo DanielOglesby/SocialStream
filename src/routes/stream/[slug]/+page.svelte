@@ -93,6 +93,11 @@
 			type="text"
 			placeholder="Input YouTube video URL"
 			bind:value={videoURL}
+			on:keydown={(e) => {
+				if (e.key === 'Enter') {
+					toggle();
+				}
+			}}
 		/>
 	</div>
 	<button on:click={toggle} class="btn bg-gradient-to-br variant-filled-primary"
