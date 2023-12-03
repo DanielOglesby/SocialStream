@@ -13,12 +13,11 @@
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
+		watchVideoMetadata();
 	});
 
 	const toggle = async () => {
 		updateVideo(videoURL);
-		currentVideo = await getCurrentVideo();
-		player.loadVideoById(trimURL(currentVideo));
 	};
 
 	const updateVideo = async (videoUrl: string) => {
@@ -41,30 +40,27 @@
 		}
 	};
 
-	const getCurrentVideo = async () => {
+	const watchVideoMetadata = async () => {
 		try {
 			const roomDocRef = doc(db, 'rooms', roomName);
 			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
-			const currentVideoQuerySnapshot = await getDocs(currentVideoCollectionRef);
-			const firstDocument = currentVideoQuerySnapshot.docs[0];
+			const videoDocRef = doc(currentVideoCollectionRef, 'video'); // Reference to the 'video' document
 
-			const docRef = doc(currentVideoCollectionRef, firstDocument.id);
-			const unsubscribe = onSnapshot(docRef, { includeMetadataChanges: true }, (docSnapshot) => {
-				if (docSnapshot.exists()) {
-					const videoId = docSnapshot.data().videoId;
-					player.loadVideoById(trimURL(videoId));
-					console.log('Updated current video:', currentVideo);
-				} else {
-					console.log('Error: Failed to update current video');
+			const unsubscribe = onSnapshot(
+				videoDocRef,
+				{ includeMetadataChanges: true },
+				(docSnapshot) => {
+					if (docSnapshot.exists()) {
+						const videoMetadata = docSnapshot.data();
+						console.log('Video metadata updated:', videoMetadata);
+						player.loadVideoById(trimURL(videoMetadata.videoId));
+					} else {
+						console.log('Error: Video metadata does not exist');
+					}
 				}
-			});
-
-			unsubscribe();
-
-			return firstDocument.exists ? firstDocument.data().videoId : null;
+			);
 		} catch (error) {
-			console.error('Error getting current video:', error);
-			return null;
+			console.error('Error watching video metadata:', error);
 		}
 	};
 </script>
