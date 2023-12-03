@@ -2,7 +2,17 @@
 	import dayjs from 'dayjs';
 	import { authStore } from '../stores/authStore';
 	import { db } from '../firebase';
-	import { collection, doc, getDoc, query, getDocs, where, addDoc } from 'firebase/firestore';
+	import {
+		collection,
+		doc,
+		getDoc,
+		query,
+		getDocs,
+		where,
+		addDoc,
+		onSnapshot,
+		orderBy
+	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
 
 	let roomName: string;
@@ -18,29 +28,25 @@
 
 	$: fetchMessages(roomName);
 
-	const fetchMessages = async (roomName: string) => {
+	const fetchMessages = (roomName: string) => {
 		try {
-			const querySnapshot = await getDocs(
-				query(collection(db, 'rooms'), where('name', '==', roomName))
-			);
+			const roomRef = doc(db, 'rooms', roomName);
+			const messagesCollectionRef = collection(roomRef, 'messages');
 
-			let messages: Message[] = [];
+			return onSnapshot(query(messagesCollectionRef, orderBy('timestamp', 'asc')), (snapshot) => {
+				const messages: Message[] = [];
 
-			// Use Promise.all to wait for all messages to be fetched
-			await Promise.all(
-				querySnapshot.docs.map(async (roomDoc) => {
-					const roomId = roomDoc.id;
-					const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
-					const messagesQuerySnapshot = await getDocs(messagesCollectionRef);
+				snapshot.forEach((doc) => {
+					const messageData = doc.data() as Message;
+					messages.push(messageData);
+				});
 
-					messagesQuerySnapshot.forEach((messageDoc) => {
-						const messageData = messageDoc.data() as Message;
-						messages = [...messages, messageData];
-					});
-				})
-			);
-			messageFeed = messages; // Set messageFeed after all messages are collected
-			console.log('Messages fetched successfully:', messages);
+				messageFeed = messages;
+				console.log('Messages updated:', messageFeed);
+				setTimeout(() => {
+					scrollChatBottom('smooth');
+				}, 0);
+			});
 		} catch (error) {
 			console.error('Error fetching messages:', error);
 		}
@@ -88,7 +94,7 @@
 		let newMessage: Message = {
 			id: messageFeed.length,
 			name: currentUser?.email,
-			timestamp: dayjs().format('MMMM D, YYYY @ h:mm A'),
+			timestamp: dayjs().format('MMMM D, YYYY @ h:mm:ss A'),
 			message: currentMessage,
 			color: 'variant-soft-primary'
 		};
