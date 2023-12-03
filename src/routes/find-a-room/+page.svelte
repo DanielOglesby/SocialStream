@@ -48,10 +48,7 @@
 					timestamp: dayjs().format('MMMM D, YYYY @ h:mm A')
 				};
 
-				await addDoc(currentVideoCollectionRef, {
-					videoId: newVideo,
-					timestamp: dayjs().format('MMMM D, YYYY @ h:mm A')
-				});
+				await setDoc(doc(currentVideoCollectionRef, 'video'), newVideo);
 				console.log('Added initial video:', newVideo);
 			}
 			await addDoc(messagesCollectionRef, newMessage);
