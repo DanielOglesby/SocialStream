@@ -11,6 +11,11 @@
 	let roomName = '';
 	let currentVideo;
 
+	$: player?.addEventListener('onStateChange', (event) => {
+		console.log('Current Time: ', player?.getCurrentTime());
+		player.seekTo(player?.getCurrentTime());
+	});
+
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
 		watchVideoMetadata();
