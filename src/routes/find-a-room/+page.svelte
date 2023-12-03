@@ -35,7 +35,7 @@
 			const newMessage: Message = {
 				id: 1,
 				name: 'Admin',
-				timestamp: dayjs().format('MMMM D, YYYY @ h:mm A'),
+				timestamp: dayjs().format('MMMM D, YYYY @ h:mm:ss A'),
 				message: 'Welcome to the room, ' + currentUser?.email + '!',
 				color: 'blue'
 			};
