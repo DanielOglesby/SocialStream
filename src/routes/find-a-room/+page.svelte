@@ -45,7 +45,7 @@
 			if (currentVideoSnapshot.empty) {
 				const newVideo = {
 					videoId: 'https://www.youtube.com/watch?v=Z7Gp25HHOO0',
-					timestamp: dayjs().format('MMMM D, YYYY @ h:mm A')
+					timestamp: 0
 				};
 
 				await setDoc(doc(currentVideoCollectionRef, 'video'), newVideo);
