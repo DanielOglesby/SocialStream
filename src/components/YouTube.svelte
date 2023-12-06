@@ -1,8 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
+	import { db } from '../firebase';
+	import { doc, setDoc, collection, addDoc, getDocs } from 'firebase/firestore';
+	import { onAuthStateChanged } from 'firebase/auth';
 
 	export let player;
 	export let initialVideoId = '';
+	export let onPlayerReady = () => {};
+	export let onPlayerStateChange = () => {};
 
 	const ytPlayerId = 'youtube-player';
 
@@ -30,14 +35,8 @@
 			videoId: initialVideoId,
 			playerVars: { autoplay: 1 },
 			events: {
-				onReady: (event) => {
-					console.log('Player ready');
-				},
-				onStateChange: (event) => {
-					if (event.data === 2) {
-						console.log('Video paused');
-					}
-				}
+				onReady: onPlayerReady,
+				onStateChange: onPlayerStateChange
 			}
 		});
 	});

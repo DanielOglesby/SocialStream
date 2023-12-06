@@ -3,8 +3,9 @@
 	import Chat from '../../../components/Chat.svelte';
 	import { trimURL } from '../../../utils/helpers';
 	import { db } from '../../../firebase';
-	import { doc, collection, onSnapshot, getDocs, updateDoc } from 'firebase/firestore';
+	import { doc, collection, onSnapshot, getDocs, updateDoc, setDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
+	import { onAuthStateChanged } from 'firebase/auth';
 
 	let player;
 	let videoURL: string;
@@ -13,18 +14,35 @@
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
-		player?.addEventListener('onStateChange', 'onPlayerStateChange');
 		watchVideoMetadata();
 	});
 
-	const onPlayerStateChange = (event) => {
-		if (event.data === 2) {
-			console.log('Video paused');
-		}
-	};
-
 	const toggle = async () => {
 		updateVideo(videoURL);
+	};
+
+	const onPlayerReady = () => {
+		console.log('Player is ready');
+	};
+
+	const onPlayerStateChange = (event) => {
+		console.log('Player state changed:', event);
+
+		const roomDocRef = doc(db, 'rooms', roomName);
+		const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+		const videoDocRef = doc(currentVideoCollectionRef, 'video');
+
+		if (event.data === 2) {
+			setDoc(videoDocRef, {
+				isPlaying: false,
+				timestamp: event.target.getCurrentTime()
+			});
+		} else if (event.data === 1) {
+			setDoc(videoDocRef, {
+				isPlaying: true,
+				timestamp: event.target.getCurrentTime()
+			});
+		}
 	};
 
 	const updateVideo = async (videoUrl: string) => {
@@ -51,7 +69,7 @@
 		try {
 			const roomDocRef = doc(db, 'rooms', roomName);
 			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
-			const videoDocRef = doc(currentVideoCollectionRef, 'video'); // Reference to the 'video' document
+			const videoDocRef = doc(currentVideoCollectionRef, 'video');
 
 			const unsubscribe = onSnapshot(
 				videoDocRef,
@@ -74,7 +92,7 @@
 
 <main class="flex items-center justify-center flex-col gap-10">
 	<div class="youtube-player">
-		<Youtube bind:player />
+		<Youtube bind:player {onPlayerReady} {onPlayerStateChange} />
 	</div>
 
 	<div class="w-[50vw]">
