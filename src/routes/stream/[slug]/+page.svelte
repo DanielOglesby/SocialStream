@@ -3,7 +3,15 @@
 	import Chat from '../../../components/Chat.svelte';
 	import { trimURL } from '../../../utils/helpers';
 	import { db } from '../../../firebase';
-	import { doc, collection, onSnapshot, getDocs, updateDoc, setDoc } from 'firebase/firestore';
+	import {
+		doc,
+		collection,
+		onSnapshot,
+		getDocs,
+		updateDoc,
+		setDoc,
+		getDoc
+	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 
@@ -25,13 +33,13 @@
 		console.log('Player is ready');
 	};
 
-	const onPlayerStateChange = (event) => {
+	const onPlayerStateChange = async (event) => {
 		console.log('Player state changed:', event);
 
 		const roomDocRef = doc(db, 'rooms', roomName);
 		const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
 		const videoDocRef = doc(currentVideoCollectionRef, 'video');
-
+		const video = await getDoc(videoDocRef);
 		if (event.data === 2) {
 			setDoc(videoDocRef, {
 				isPlaying: false,
