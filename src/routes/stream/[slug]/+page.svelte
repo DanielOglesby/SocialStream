@@ -13,8 +13,15 @@
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
+		player?.addEventListener('onStateChange', 'onPlayerStateChange');
 		watchVideoMetadata();
 	});
+
+	const onPlayerStateChange = (event) => {
+		if (event.data === 2) {
+			console.log('Video paused');
+		}
+	};
 
 	const toggle = async () => {
 		updateVideo(videoURL);

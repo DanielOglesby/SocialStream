@@ -28,7 +28,17 @@
 			height: '100%',
 			width: '100%',
 			videoId: initialVideoId,
-			playerVars: { autoplay: 1 }
+			playerVars: { autoplay: 1 },
+			events: {
+				onReady: (event) => {
+					console.log('Player ready');
+				},
+				onStateChange: (event) => {
+					if (event.data === 2) {
+						console.log('Video paused');
+					}
+				}
+			}
 		});
 	});
 </script>
