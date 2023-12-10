@@ -14,11 +14,14 @@
 	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
+	import Slider from '../../../components/Slider.svelte';
 
 	let player;
 	let videoURL: string;
 	let roomName = '';
 	let currentVideo;
+	let duration;
+	let timeChosen = 0;
 
 	onMount(() => {
 		roomName = window.location.pathname.split('/')[2];
@@ -40,16 +43,21 @@
 		const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
 		const videoDocRef = doc(currentVideoCollectionRef, 'video');
 		const video = await getDoc(videoDocRef);
+		duration = player?.getDuration();
+		console.log('duration', duration);
 		if (event.data === 2) {
 			setDoc(videoDocRef, {
 				isPlaying: false,
 				timestamp: event.target.getCurrentTime()
 			});
 		} else if (event.data === 1) {
-			setDoc(videoDocRef, {
-				isPlaying: true,
-				timestamp: event.target.getCurrentTime()
-			});
+			setDoc(
+				videoDocRef,
+				{
+					isPlaying: true
+				},
+				{ merge: true }
+			);
 		}
 	};
 
@@ -102,6 +110,7 @@
 	<div class="youtube-player">
 		<Youtube bind:player {onPlayerReady} {onPlayerStateChange} />
 	</div>
+	<Slider bind:value={timeChosen} max={duration} />
 
 	<div class="w-[50vw]">
 		<input
