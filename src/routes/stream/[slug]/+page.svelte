@@ -67,11 +67,7 @@
 						console.log('Refreshed video metadata:', videoMetadata);
 
 						// Check if the document has the timestamp field and it has changed
-						if (
-							videoMetadata &&
-							videoMetadata.timestamp !== undefined &&
-							videoMetadata.timestamp !== timeChosen
-						) {
+						if (videoMetadata) {
 							setTimeout(() => {
 								player?.seekTo(videoMetadata.timestamp);
 								player?.playVideo();
@@ -104,7 +100,6 @@
 			const updateCurrentVideo = await updateDoc(currentVideoDocRef, {
 				timestamp: timeChosen
 			});
-			player?.seekTo(timeChosen);
 
 			console.log('Updated timestamp: ', updateCurrentVideo);
 		} catch (error) {
