@@ -36,30 +36,33 @@
 		console.log('Player is ready');
 	};
 
-	const onPlayerStateChange = async (event) => {
-		console.log('Player state changed:', event);
+	// const onPlayerStateChange = async (event) => {
+	// 	console.log('Player state changed:', event);
 
-		const roomDocRef = doc(db, 'rooms', roomName);
-		const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
-		const videoDocRef = doc(currentVideoCollectionRef, 'video');
-		const video = await getDoc(videoDocRef);
-		duration = player?.getDuration();
-		console.log('duration', duration);
-		if (event.data === 2) {
-			setDoc(videoDocRef, {
-				isPlaying: false,
-				timestamp: event.target.getCurrentTime()
-			});
-		} else if (event.data === 1) {
-			setDoc(
-				videoDocRef,
-				{
-					isPlaying: true
-				},
-				{ merge: true }
-			);
-		}
-	};
+	// 	const roomDocRef = doc(db, 'rooms', roomName);
+	// 	const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+	// 	const videoDocRef = doc(currentVideoCollectionRef, 'video');
+	// 	const video = await getDoc(videoDocRef);
+	// 	duration = player?.getDuration();
+	// 	if (event.data === 2) {
+	// 		setDoc(
+	// 			videoDocRef,
+	// 			{
+	// 				isPlaying: false,
+	// 				timestamp: event.target.getCurrentTime()
+	// 			},
+	// 			{ merge: true }
+	// 		);
+	// 	} else if (event.data === 1) {
+	// 		setDoc(
+	// 			videoDocRef,
+	// 			{
+	// 				isPlaying: true
+	// 			},
+	// 			{ merge: true }
+	// 		);
+	// 	}
+	// };
 
 	const updateVideo = async (videoUrl: string) => {
 		if (!videoUrl) return null;
@@ -94,9 +97,21 @@
 					if (docSnapshot.exists()) {
 						const videoMetadata = docSnapshot.data();
 						console.log('Refreshed video metadata:', videoMetadata);
-						player.loadVideoById(trimURL(videoMetadata.videoId));
-					} else {
-						console.log('Error refreshing video metadata:');
+
+						// Check if the document has the timestamp field and it has changed
+						if (
+							videoMetadata &&
+							videoMetadata.timestamp !== undefined &&
+							videoMetadata.timestamp !== timeChosen
+						) {
+							player?.seekTo(videoMetadata.timestamp);
+							player?.playVideo();
+							console.log('Seeking to new timestamp', videoMetadata.timestamp);
+						}
+
+						if (videoMetadata) {
+							player?.loadVideoById(trimURL(videoMetadata.videoId));
+						}
 					}
 				}
 			);
@@ -129,7 +144,7 @@
 
 <main class="flex items-center justify-center flex-col gap-10">
 	<div class="youtube-player">
-		<Youtube bind:player {onPlayerReady} {onPlayerStateChange} />
+		<Youtube bind:player {onPlayerReady} />
 	</div>
 	<Slider bind:value={timeChosen} max={duration} on:change={() => handleSliderChange(timeChosen)} />
 
