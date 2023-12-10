@@ -3,24 +3,15 @@
 	import Chat from '../../../components/Chat.svelte';
 	import { trimURL } from '../../../utils/helpers';
 	import { db } from '../../../firebase';
-	import {
-		doc,
-		collection,
-		onSnapshot,
-		getDocs,
-		updateDoc,
-		setDoc,
-		getDoc
-	} from 'firebase/firestore';
+	import { doc, collection, onSnapshot, getDocs, updateDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
-	import { onAuthStateChanged } from 'firebase/auth';
 	import Slider from '../../../components/Slider.svelte';
 
 	let player;
 	let videoURL: string;
 	let roomName = '';
 	let currentVideo;
-	let duration;
+	let duration = 0;
 	let timeChosen = 0;
 
 	onMount(() => {
@@ -36,33 +27,10 @@
 		console.log('Player is ready');
 	};
 
-	// const onPlayerStateChange = async (event) => {
-	// 	console.log('Player state changed:', event);
-
-	// 	const roomDocRef = doc(db, 'rooms', roomName);
-	// 	const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
-	// 	const videoDocRef = doc(currentVideoCollectionRef, 'video');
-	// 	const video = await getDoc(videoDocRef);
-	// 	duration = player?.getDuration();
-	// 	if (event.data === 2) {
-	// 		setDoc(
-	// 			videoDocRef,
-	// 			{
-	// 				isPlaying: false,
-	// 				timestamp: event.target.getCurrentTime()
-	// 			},
-	// 			{ merge: true }
-	// 		);
-	// 	} else if (event.data === 1) {
-	// 		setDoc(
-	// 			videoDocRef,
-	// 			{
-	// 				isPlaying: true
-	// 			},
-	// 			{ merge: true }
-	// 		);
-	// 	}
-	// };
+	const onPlayerStateChange = (event) => {
+		duration = player?.getDuration();
+		console.log('Duration: ', duration);
+	};
 
 	const updateVideo = async (videoUrl: string) => {
 		if (!videoUrl) return null;
@@ -104,9 +72,11 @@
 							videoMetadata.timestamp !== undefined &&
 							videoMetadata.timestamp !== timeChosen
 						) {
-							player?.seekTo(videoMetadata.timestamp);
-							player?.playVideo();
-							console.log('Seeking to new timestamp', videoMetadata.timestamp);
+							setTimeout(() => {
+								player?.seekTo(videoMetadata.timestamp);
+								player?.playVideo();
+								console.log('Seeking to new timestamp', videoMetadata.timestamp);
+							}, 1000);
 						}
 
 						if (videoMetadata) {
@@ -122,7 +92,6 @@
 
 	async function handleSliderChange(timeChosen) {
 		console.log('Seeking player to:', timeChosen);
-		player?.seekTo(timeChosen);
 
 		try {
 			const roomDocRef = doc(db, 'rooms', roomName);
@@ -135,6 +104,8 @@
 			const updateCurrentVideo = await updateDoc(currentVideoDocRef, {
 				timestamp: timeChosen
 			});
+			player?.seekTo(timeChosen);
+
 			console.log('Updated timestamp: ', updateCurrentVideo);
 		} catch (error) {
 			console.error('Error updating timestamp: ', error);
@@ -144,7 +115,7 @@
 
 <main class="flex items-center justify-center flex-col gap-10">
 	<div class="youtube-player">
-		<Youtube bind:player {onPlayerReady} />
+		<Youtube bind:player {onPlayerReady} {onPlayerStateChange} />
 	</div>
 	<Slider bind:value={timeChosen} max={duration} on:change={() => handleSliderChange(timeChosen)} />
 
