@@ -2,6 +2,9 @@
 	import { RangeSlider } from '@skeletonlabs/skeleton';
 	import dayjs from 'dayjs';
 	import duration from 'dayjs/plugin/duration';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	dayjs.extend(duration);
 
@@ -21,9 +24,20 @@
 
 	$: convertedValue = convertSecondsWithDecimalsToMinutesAndSeconds(value);
 	$: convertedMax = convertSecondsWithDecimalsToMinutesAndSeconds(max);
+
+	export function handleChange(event) {
+		dispatch('change', event.target.value);
+	}
 </script>
 
-<RangeSlider name="range-slider" class="w-[80vw]" bind:value {max} step={1}>
+<RangeSlider
+	name="range-slider"
+	class="w-[80vw]"
+	bind:value
+	{max}
+	step={1}
+	on:change={handleChange}
+>
 	<div class="flex justify-between items-center">
 		<div class="font-bold">Video Time</div>
 		{#if typeof convertedValue === 'object' && typeof convertedMax === 'object'}

@@ -93,24 +93,45 @@
 				(docSnapshot) => {
 					if (docSnapshot.exists()) {
 						const videoMetadata = docSnapshot.data();
-						console.log('Video metadata updated:', videoMetadata);
+						console.log('Refreshed video metadata:', videoMetadata);
 						player.loadVideoById(trimURL(videoMetadata.videoId));
 					} else {
-						console.log('Error: Video metadata does not exist');
+						console.log('Error refreshing video metadata:');
 					}
 				}
 			);
 		} catch (error) {
-			console.error('Error watching video metadata:', error);
+			console.error('Error refreshing video metadata:', error);
 		}
 	};
+
+	async function handleSliderChange(timeChosen) {
+		console.log('Seeking player to:', timeChosen);
+		player?.seekTo(timeChosen);
+
+		try {
+			const roomDocRef = doc(db, 'rooms', roomName);
+			const currentVideoCollectionRef = collection(roomDocRef, 'currentVideo');
+			const currentVideoQuerySnapshot = await getDocs(currentVideoCollectionRef);
+			const firstDocument = currentVideoQuerySnapshot.docs[0];
+
+			const currentVideoDocRef = doc(currentVideoCollectionRef, firstDocument.id);
+
+			const updateCurrentVideo = await updateDoc(currentVideoDocRef, {
+				timestamp: timeChosen
+			});
+			console.log('Updated timestamp: ', updateCurrentVideo);
+		} catch (error) {
+			console.error('Error updating timestamp: ', error);
+		}
+	}
 </script>
 
 <main class="flex items-center justify-center flex-col gap-10">
 	<div class="youtube-player">
 		<Youtube bind:player {onPlayerReady} {onPlayerStateChange} />
 	</div>
-	<Slider bind:value={timeChosen} max={duration} />
+	<Slider bind:value={timeChosen} max={duration} on:change={() => handleSliderChange(timeChosen)} />
 
 	<div class="w-[50vw]">
 		<input
