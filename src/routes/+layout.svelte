@@ -7,6 +7,7 @@
 	import { auth } from '../firebase';
 	import { authStore } from '../stores/authStore';
 	import { initializeStores } from '@skeletonlabs/skeleton';
+	import Hamburger from '../components/Hamburger.svelte';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	initializeStores();
@@ -44,9 +45,7 @@
 </Drawer>
 <main class="mainContainer h-screen flex-col gap-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
 	<div>
-		<button type="button" class="btn variant-filled-primary" on:click={handleDrawer}
-			>Open Drawer</button
-		>
+		<button type="button" class="btn" on:click={handleDrawer}><Hamburger></Hamburger> </button>
 	</div>
 	<slot />
 </main>
