@@ -14,12 +14,6 @@
 		currentUser = authState.currentUser;
 	});
 
-	onMount(() => {
-		if (!currentUser || currentUser === null) {
-			goto('/');
-		}
-	});
-
 	type Message = {
 		id: number;
 		name: any;

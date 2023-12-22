@@ -22,9 +22,6 @@
 	});
 
 	onMount(() => {
-		if (!currentUser || currentUser === null) {
-			goto('/');
-		}
 		roomName = window.location.pathname.split('/')[2];
 		watchVideoMetadata();
 	});
