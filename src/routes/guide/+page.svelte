@@ -1,7 +1,5 @@
 <main class="container mx-auto">
 	<h1 class="text-4xl font-bold mb-4">User Guide</h1>
-
-	<h2 class="text-2xl font-bold mb-2">How it works</h2>
 	<p class="mb-4">
 		SocialStream allows you to create virtual rooms where you can invite your friends to watch
 		YouTube videos together. Here's how it works:
