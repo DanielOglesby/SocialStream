@@ -37,8 +37,9 @@
 
 <Drawer>
 	<div class="flex flex-col items-center justify-center text-3xl h-full">
-		<a class="mb-4" href="/about">About this site</a>
-		<a class="mb-4" href="/guide">User Guide</a>
+		<a class="mb-4 hover:text-green-400" href="/">Log In</a>
+		<a class="mb-4 hover:text-green-400" href="/about">About this site</a>
+		<a class="mb-4 hover:text-green-400" href="/guide">User Guide</a>
 	</div>
 </Drawer>
 <main class="mainContainer h-screen flex-col gap-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
