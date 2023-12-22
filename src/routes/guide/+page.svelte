@@ -2,13 +2,13 @@
 	<h1 class="text-4xl font-bold mb-4">User Guide</h1>
 	<p class="mb-4">
 		SocialStream allows you to create virtual rooms where you can invite your friends to watch
-		YouTube videos together. Here's how it works:
+		YouTube videos together. Here's how it works.
 	</p>
 	<ol class="list-decimal ml-6 mb-4">
 		<li>Create a room using a unique name</li>
 		<li>Other users can join by typing in the same name</li>
-		<li>Any user can then input a YouTube URL into the text bar</li>
-		<li>Any user can then change the time for all other users using the timestamp slider</li>
+		<li>Any user can load a new video by placing a YouTube URL into the text bar</li>
+		<li>Any user can change the time for all other users using the timestamp slider</li>
 		<li>Participants can chat with each other while watching the video</li>
 		<li>
 			IMPORTANT: Playback is currently only synchronized via the timestamp slider, so if one user
