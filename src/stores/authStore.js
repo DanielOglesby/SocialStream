@@ -18,9 +18,7 @@ export const authHandlers = {
         await signOut(auth)
     },
     resetPassword: async (email) => {
-        console.log('WE ARE HERE', email)
         if (!email) {
-            console.log('inHERE')
             return
         }
         await sendPasswordResetEmail(auth, email)
