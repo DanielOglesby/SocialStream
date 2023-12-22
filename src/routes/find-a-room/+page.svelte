@@ -44,7 +44,7 @@
 			const currentVideoSnapshot = await getDocs(currentVideoCollectionRef);
 			if (currentVideoSnapshot.empty) {
 				const newVideo = {
-					videoId: 'https://www.youtube.com/watch?v=Z7Gp25HHOO0',
+					videoId: '',
 					timestamp: 0
 				};
 
