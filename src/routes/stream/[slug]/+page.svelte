@@ -5,16 +5,26 @@
 	import { db } from '../../../firebase';
 	import { doc, collection, onSnapshot, getDocs, updateDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { authStore } from '../../../stores/authStore';
 	import Slider from '../../../components/Slider.svelte';
 
 	let player;
 	let videoURL: string;
 	let roomName = '';
-	let currentVideo;
+	let currentUser: any;
 	let duration = 0;
 	let timeChosen = 0;
 
+	const unsubscribe = authStore.subscribe((authState) => {
+		console.log('Current User:', authState.currentUser);
+		currentUser = authState.currentUser;
+	});
+
 	onMount(() => {
+		if (!currentUser || currentUser === null) {
+			goto('/');
+		}
 		roomName = window.location.pathname.split('/')[2];
 		watchVideoMetadata();
 	});

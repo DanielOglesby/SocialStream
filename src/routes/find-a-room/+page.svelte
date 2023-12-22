@@ -3,9 +3,22 @@
 	import { db } from '../../firebase';
 	import { doc, setDoc, collection, addDoc, getDocs } from 'firebase/firestore';
 	import { authStore } from '../../stores/authStore';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	let roomName = '';
 	let currentUser: any;
+
+	const unsubscribe = authStore.subscribe((authState) => {
+		console.log('Current User:', authState.currentUser);
+		currentUser = authState.currentUser;
+	});
+
+	onMount(() => {
+		if (!currentUser || currentUser === null) {
+			goto('/');
+		}
+	});
 
 	type Message = {
 		id: number;
@@ -14,11 +27,6 @@
 		message: string;
 		color: string;
 	};
-
-	const unsubscribe = authStore.subscribe((authState) => {
-		console.log('Current User:', authState.currentUser);
-		currentUser = authState.currentUser;
-	});
 
 	async function handleEnterRoomClick() {
 		console.log('roomName ', roomName);

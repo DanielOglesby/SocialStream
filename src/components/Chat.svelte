@@ -111,9 +111,9 @@
 <div bind:this={elemChat} class="overflow-y-scroll h-[30vh]">
 	<div class="w-full grid grid-cols-3 gap-1">
 		{#each messageFeed as message}
-			<div class="bg-surface-500/30 p-4">{message.name}</div>
-			<div class="bg-surface-500/30 p-4">{message.message}</div>
-			<div class="bg-surface-500/30 p-4">{message.timestamp}</div>
+			<div class="bg-surface-500/30 p-4 overflow-auto">{message.name}</div>
+			<div class="bg-surface-500/30 p-4 overflow-auto">{message.message}</div>
+			<div class="bg-surface-500/30 p-4 overflow-auto">{message.timestamp}</div>
 		{/each}
 	</div>
 </div>
