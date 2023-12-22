@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { authStore } from '../../../stores/authStore';
 	import Slider from '../../../components/Slider.svelte';
+	import Rewind from '../../../components/Rewind.svelte';
 
 	let player;
 	let videoURL: string;
@@ -15,6 +16,8 @@
 	let currentUser: any;
 	let duration = 0;
 	let timeChosen = 0;
+	let playerWidth = '70vw';
+	let playerHeight = '39.375vw';
 
 	const unsubscribe = authStore.subscribe((authState) => {
 		console.log('Current User:', authState.currentUser);
@@ -37,6 +40,10 @@
 	const onPlayerStateChange = (event) => {
 		duration = player?.getDuration();
 		console.log('Duration: ', duration);
+	};
+	const handleResize = () => {
+		playerWidth = event?.target.style.width;
+		playerHeight = event?.target.style.height;
 	};
 
 	const updateVideo = async (videoUrl: string) => {
@@ -116,11 +123,21 @@
 </script>
 
 <main class="flex items-center justify-center flex-col gap-10">
-	<div class="youtube-player">
+	<div
+		class="youtube-player"
+		style="resize: both; overflow: auto; width: {playerWidth}; height: {playerHeight};"
+		on:resize={handleResize}
+	>
 		<Youtube bind:player {onPlayerReady} {onPlayerStateChange} />
 	</div>
-	<Slider bind:value={timeChosen} max={duration} on:change={() => handleSliderChange(timeChosen)} />
-
+	<div class="flex items-center">
+		<button on:click={() => handleSliderChange(0)} class="h-12 w-12"><Rewind /></button>
+		<Slider
+			bind:value={timeChosen}
+			max={duration}
+			on:change={() => handleSliderChange(timeChosen)}
+		/>
+	</div>
 	<div class="w-[50vw]">
 		<input
 			class="input"
@@ -145,6 +162,6 @@
 <style>
 	.youtube-player {
 		aspect-ratio: 16/9;
-		min-width: 70vw;
+		width: 70vw;
 	}
 </style>
