@@ -23,7 +23,8 @@
 	<ul class="list-disc ml-6 mb-4">
 		<li>Real-time streaming of YouTube videos</li>
 		<li>Watch videos with friends</li>
-		<li>Chat with friends while watching</li>
+		<li>Chat across devices while watching</li>
+		<li>Persistent rooms</li>
 		<li>Sync playback across devices</li>
 	</ul>
 </main>
