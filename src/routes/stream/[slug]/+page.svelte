@@ -66,7 +66,6 @@
 						const videoMetadata = docSnapshot.data();
 						console.log('Refreshed video metadata:', videoMetadata);
 
-						// Check if the document has the timestamp field and it has changed
 						if (videoMetadata) {
 							setTimeout(() => {
 								player?.seekTo(videoMetadata.timestamp);
@@ -105,6 +104,7 @@
 		} catch (error) {
 			console.error('Error updating timestamp: ', error);
 		}
+		timeChosen = 0;
 	}
 </script>
 
