@@ -1,14 +1,5 @@
 <main class="container mx-auto">
-	<h1 class="text-4xl font-bold mb-4">What is SocialStream?</h1>
-	<p class="text-lg mb-4">A streaming service to watch YouTube videos with friends in real time.</p>
-
-	<h2 class="text-2xl font-bold mb-2">Features</h2>
-	<ul class="list-disc ml-6 mb-4">
-		<li>Real-time streaming of YouTube videos</li>
-		<li>Watch videos with friends</li>
-		<li>Chat with friends while watching</li>
-		<li>Sync playback across devices</li>
-	</ul>
+	<h1 class="text-4xl font-bold mb-4">User Guide</h1>
 
 	<h2 class="text-2xl font-bold mb-2">How it works</h2>
 	<p class="mb-4">
