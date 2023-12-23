@@ -45,8 +45,7 @@
 	</div>
 	<div class="flex flex-col items-center justify-center text-3xl h-full">
 		<a class="mb-4 hover:text-green-400" href="/" on:click={() => drawerStore.close()}>Log In</a>
-		<a class="mb-4 hover:text-green-400" href="/about" on:click={() => drawerStore.close()}
-			>About this site</a
+		<a class="mb-4 hover:text-green-400" href="/about" on:click={() => drawerStore.close()}>About</a
 		>
 		<a class="mb-4 hover:text-green-400" href="/guide" on:click={() => drawerStore.close()}
 			>User Guide</a
