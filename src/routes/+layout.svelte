@@ -26,9 +26,10 @@
 		id: 'example-3',
 		bgDrawer: 'bg-purple-900 text-white',
 		bgBackdrop: 'bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50',
-		width: 'w-[280px] md:w-[480px]',
-		padding: 'p-4',
-		rounded: 'rounded-xl'
+		width: 'w-full',
+		height: 'h-full',
+		padding: 'p-0',
+		rounded: 'rounded-none'
 	};
 
 	function handleDrawer() {
@@ -37,12 +38,22 @@
 </script>
 
 <Drawer>
+	<div class="ml-10 mt-10">
+		<button on:click={() => drawerStore.close()}>
+			<Hamburger />
+		</button>
+	</div>
 	<div class="flex flex-col items-center justify-center text-3xl h-full">
-		<a class="mb-4 hover:text-green-400" href="/">Log In</a>
-		<a class="mb-4 hover:text-green-400" href="/about">About this site</a>
-		<a class="mb-4 hover:text-green-400" href="/guide">User Guide</a>
+		<a class="mb-4 hover:text-green-400" href="/" on:click={() => drawerStore.close()}>Log In</a>
+		<a class="mb-4 hover:text-green-400" href="/about" on:click={() => drawerStore.close()}
+			>About this site</a
+		>
+		<a class="mb-4 hover:text-green-400" href="/guide" on:click={() => drawerStore.close()}
+			>User Guide</a
+		>
 	</div>
 </Drawer>
+
 <main class="mainContainer h-screen flex-col gap-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
 	<div>
 		<button type="button" class="btn" on:click={handleDrawer}><Hamburger></Hamburger> </button>
