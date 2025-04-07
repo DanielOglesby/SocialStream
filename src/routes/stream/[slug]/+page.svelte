@@ -5,7 +5,6 @@
 	import { db } from '../../../firebase';
 	import { doc, collection, onSnapshot, getDocs, updateDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { authStore } from '../../../stores/authStore';
 	import Slider from '../../../components/Slider.svelte';
 	import Rewind from '../../../components/Rewind.svelte';
@@ -156,7 +155,9 @@
 		>change video</button
 	>
 
-	<Chat />
+	<div class="p-12">
+		<Chat />
+	</div>
 </main>
 
 <style>

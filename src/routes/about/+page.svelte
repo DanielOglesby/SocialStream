@@ -3,7 +3,7 @@
 	<p class="text-lg mb-4">A streaming service to watch YouTube videos together in real time.</p>
 	<p class="text-lg mb-4">
 		This app was created by <a
-			href="https://www.linkedin.com/in/daniel-oglesby/"
+			href="https://danieloglesby.com"
 			class="text-green-500 hover:text-green-700">Daniel Oglesby</a
 		>
 	</p>
