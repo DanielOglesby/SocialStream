@@ -8,6 +8,11 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
+ARG VITE_APIKEY
+ENV VITE_APIKEY=$VITE_APIKEY
+
+RUN echo "VITE_APIKEY=$VITE_APIKEY" > .env
+
 RUN yarn build
 
 EXPOSE 3000
